@@ -60,7 +60,7 @@
         parser.parse();
 
         app.webmapId = "8315cf7d20f0484e869c4791f70f4f15";
-        app.printUrl = "http://localhost:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task";
+        app.printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GepPDF/GPServer/WebMap2GepPDF";
 
         esriConfig.defaults.io.proxyUrl = "/proxy/";
         
@@ -77,42 +77,8 @@
         });
 
         function createPrintDijit(printTitle) {
-          var layoutTemplate, templateNames, mapOnlyIndex, templates;
-          
-          // create an array of objects that will be used to create print templates
-          var layouts = [{
-            name: "Letter ANSI A Landscape", 
-            label: "Landscape (PDF)", 
-            format: "pdf", 
-            options: { 
-              legendLayers: [], // empty array means no legend
-              scalebarUnit: "Miles",
-              titleText: printTitle + ", Landscape PDF" 
-            }
-          }, {
-            name: "Letter ANSI A Portrait", 
-            label: "Portrait (Image)", 
-            format: "jpg", 
-            options:  { 
-              legendLayers: [],
-              scalebarUnit: "Miles",
-              titleText: printTitle + ", Portrait JPG"
-            }
-          }];
-          
-          // create the print templates
-          var templates = arrayUtils.map(layouts, function(lo) {
-            var t = new PrintTemplate();
-            t.layout = lo.name;
-            t.label = lo.label;
-            t.format = lo.format;
-            t.layoutOptions = lo.options;
-            return t;
-          });
-
           app.printer = new Print({
             map: app.map,
-            templates: templates,
             url: app.printUrl
           }, dom.byId("print_button"));
           app.printer.startup();
