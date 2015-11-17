@@ -47,7 +47,7 @@ arcpy.AddMessage('Output PDF path: {0}'.format(Output_File))
 ##arcpy.mapping.ExportToPDF(mapDoc, Output_File) 
 pubpy_ex.ExportToGeoPDF(mapDoc, Output_File)
 
-# Set the output parameter to be the output file of the server job
+# Set the output parameter to be the output file of the server job 
 paramBefore = arcpy.GetParameterAsText(1)
 arcpy.AddMessage('GetParameterAsText(1) before: {0}'.format(paramBefore))
 arcpy.SetParameterAsText(3, Output_File)

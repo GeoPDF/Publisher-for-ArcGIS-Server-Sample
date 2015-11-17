@@ -1,122 +1,52 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title></title>
-    <link rel="stylesheet" href="http://js.arcgis.com/3.14/dijit/themes/tundra/tundra.css">
-    <link rel="stylesheet" href="http://js.arcgis.com/3.14/esri/css/esri.css">
-    <style>
-      html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
-      h3 { margin: 0 0 5px 0; border-bottom: 1px solid #444; padding: 0 0 5px 0; text-align: center; }
-      .shadow {
-        -moz-box-shadow: 0 0 5px #888;
-        -webkit-box-shadow: 0 0 5px #888;
-        box-shadow: 0 0 5px #888;
-      }
-      #map{ margin: 0; padding: 0; }
-      #feedback {
-        background: #fff;
-        border: 2px solid #666;
-        border-radius: 5px;
-        bottom: 20px;
-        color: #666;
-        font-family: arial;
-        height: auto;
-        left: 20px;
-        margin: 5px;
-        padding: 10px;
-        position: absolute;
-        width: 300px;
-        z-index: 40;
-      }
-      #feedback a {
-        border-bottom: 1px solid #888;
-        color: #666;
-        text-decoration: none;
-      }
-      #feedback a:hover, #feedback a:active, #feedback a:visited {
-        border: none;
-        color: #666;
-        text-decoration: none;
-      }
-      #note { padding: 0 0 10px 0; }
-      #info { padding: 10px 0 0 0; }
-    </style>
+    <title>Web Map to GeoPDF</title>
+    <link rel="stylesheet" type="text/css" 
+	  href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.0/js/dojo/dijit/themes/tundra/tundra.css">
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=3.0"></script>
+    <script type="text/javascript" language="Javascript">
+      dojo.require("esri.map");
+      dojo.require("esri.tasks.PrintTask");
+      var printTask, params;
 
-    <script src="http://js.arcgis.com/3.14/"></script>
-    <script>
-      var app = {};
-      require([
-        "esri/arcgis/utils", "esri/dijit/Print", 
-        "esri/tasks/PrintTemplate", "esri/config",
-        "dojo/_base/array", "dojo/dom", "dojo/parser", 
-        "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dojo/domReady!"
-      ], function(
-        arcgisUtils, Print, 
-        PrintTemplate, esriConfig,
-        arrayUtils, dom, parser
-      ) {
-        parser.parse();
+      function init() {
+		// when loading page, setup our web map and print task
 
-        app.webmapId = "8315cf7d20f0484e869c4791f70f4f15";
-        app.printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GepPDF/GPServer/WebMap2GepPDF";
+        // create web map and add tiled map service
+        var map = new esri.Map("map");
+        var tiledUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer";
+        var tiledLayer = new esri.layers.ArcGISTiledMapServiceLayer(tiledUrl);
+        map.addLayer(tiledLayer);
+		
+		// setup print task and PrintParameters
+        var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GepPDF/GPServer/WebMap2GepPDF";
+        printTask = new esri.tasks.PrintTask(printUrl, {async: true});
+        params = new esri.tasks.PrintParameters();
+        params.map = map;
+      }
 
-        esriConfig.defaults.io.proxyUrl = "/proxy/";
-        
-        var webmap = arcgisUtils.createMap(app.webmapId, "map", {
-          mapOptions: {
-            center: [-85.673, 38.21],
-            zoom: 10
-          }
-        });
-        webmap.then(function(resp) {
-          app.mapInfo = resp.itemInfo.item;
-          app.map = resp.map;
-          createPrintDijit(app.mapInfo.title);
-        });
+      function print() {
+		// when Print button is clicked, setup template and call print task
+        var printTemplate = new esri.tasks.PrintTemplate();
+        // use the extent of the webmap in the output PDF
+        printTemplate.preserveScale = false;
+        params.template = printTemplate;
+        printTask.execute(params, printComplete);
+      }
 
-        function createPrintDijit(printTitle) {
-          app.printer = new Print({
-            map: app.map,
-            url: app.printUrl
-          }, dom.byId("print_button"));
-          app.printer.startup();
-        }
-      });
+      function printComplete(result) {
+		// when print task is done, show results
+        window.open(result.url);
+      }
+
+      dojo.addOnLoad(init);
+
     </script>
   </head>
-
   <body class="tundra">
-    <div data-dojo-type="dijit/layout/BorderContainer"
-         data-dojo-props="design:'headline',gutters:false"
-         style="width: 100%; height: 100%; margin: 0;">
-      <div id="map"
-           data-dojo-type="dijit/layout/ContentPane"
-           data-dojo-props="region:'center'">
-
-        <div id="feedback">
-          <h3>
-            ArcGIS.com Webmap and the Print Dijit
-          </h3>
-          <div id="info">
-            <div id="note">
-              Note:  This sample uses an ArcGIS Server version 10.1 export web map task.
-            </div>
-            
-            <!-- used for the print dijit -->
-            <div id="print_button"></div>
-
-            <div id="info">
-              The map is <a href="https://developers.arcgis.com/javascript/jsapi/esri.arcgis.utils-amd.html#createmap">created from an ArcGIS.com webmap</a> and 
-              <a href="https://developers.arcgis.com/javascript/jsapi/printtemplate-amd.html">print templates</a> are 
-              created manually. Refer to the documentation for more print template options (output formats, additional layouts, etc.). 
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
+    <input type="button" id="print" value="Print" onclick="print();"/>
+    <div id="map" style="width:1000px; height:600px;"></div>
   </body>
 </html>
 
