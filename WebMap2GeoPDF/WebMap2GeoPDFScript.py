@@ -1,6 +1,8 @@
 """
 WebMap2GeoPDFScript.py
-This creates a GeoPDF document given a JSON description of a web map. This code conforms with the signature required for the Esri Web API Print object.
+This creates a GeoPDF document given a JSON description of a web 
+map. This code conforms with the signature required for the Esri 
+Web API Print object.
 
 Copyright 2015 TerraGo Technologies Inc.
 
@@ -17,34 +19,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import arcpy, os, uuid
+import os
+import uuid
+import arcpy
 import pubpy.geopdf_export.api as pubpy_ex
 
 # Input WebMap json
 Web_Map_as_JSON = arcpy.GetParameterAsText(0)
 
-# The template location in the server data store
+# The template location (installed with ArcGIS Server)
 templatePath = r"C:\Program Files\ArcGIS\Server\Templates\ExportWebMapTemplates"
-##templatePath = r"C:\arcgisserver\TerraGo_Samples"
-templateName = r"Letter ANSI A Landscape"
-##templateName = r"USA_Sample"
+templateName = r"Letter ANSI A Portrait"
 templateMxd = os.path.join(templatePath, (templateName + ".mxd"))
    
 # Convert the WebMap to a map document
-result = arcpy.mapping.ConvertWebMapToMapDocument(Web_Map_as_JSON, templateMxd)
+result = arcpy.mapping.ConvertWebMapToMapDocument(
+	Web_Map_as_JSON, templateMxd)
 mapDoc = result.mapDocument
 
 # Use the uuid module to generate a GUID as part of the output name
 # This will ensure a unique output name
 output = 'WebMap_{}.pdf'.format(str(uuid.uuid1()))
 Output_File = os.path.join(arcpy.env.scratchFolder, output)
+arcpy.AddMessage('Output PDF path: {0}'.format(Output_File))
 
 # Export the WebMap
 ##arcpy.mapping.ExportToPDF(mapDoc, Output_File) 
 pubpy_ex.ExportToGeoPDF(mapDoc, Output_File)
 
 # Set the output parameter to be the output file of the server job
-arcpy.SetParameterAsText(1, Output_File)
+paramBefore = arcpy.GetParameterAsText(1)
+arcpy.AddMessage('GetParameterAsText(1) before: {0}'.format(paramBefore))
+arcpy.SetParameterAsText(3, Output_File)
+paramAfter = arcpy.GetParameterAsText(2)
+arcpy.AddMessage('GetParameterAsText(2) after: {0}'.format(paramAfter))
 
 # Clean up - delete the map document reference
 filePath = mapDoc.filePath
