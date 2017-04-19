@@ -23,23 +23,23 @@ It is recommended that 'WebMap2GeoPDF' folder is placed in your 'c:\arcgisserver
   6. Enter **geopdf** as a tag and fill Summary and Description with 'WebMap2GeoPDF Sample'.
   7. Click **Save** and exit the **Item Description** dialog box.
   8. Right-click the WebMap2GeoPDF toolbox and click **Add > Script**.
-  9. Enter 'WebMap2GeoPDF' for the **Name** and **Label**.
+  9. Enter '*WebMap2GeoPDF*' for the **Name** and **Label**.
   10. Click **Next**.
   11. **Script File** should be set to the **WebMap2GeoPDF.py** in the python folder for this sample.
   12. Click **Next**.
-  12. Add two parameters to the script tool.  
-    >(**Note:** Web_Map_as_JSON and Output_File parameter names must be spelled correctly and are case sensitive!)
+  13. Add two parameters to the script tool.  
+    (**Note:** Web_Map_as_JSON and Output_File parameter names must be spelled correctly and are case sensitive!)
 
     - **Web_Map_as_JSON** - INPUT, this parameter takes a JSON representation of the map to be exported.  Set `Data Type=String`.  Make sure the **Parameter Properties**
       `Type=Optional`, and `Direction=Input`
     - **Output_File** - OUTPUT, filename that was exported.  Set `Data Type=File`.  Make sure the **Parameter Properties** 
       `Type=Derived`, and `Direction=Output`
-  13. Click *Finish*.
-  14. Right-click **WebMap2GeoPDF** script in the toolbox and click **Item Description**.
-  15. Click *Edit*.
-  16. Enter **geopdf** as a tag, and fill Summary and Usage with **WebMap2GeoPDF**
-  17. Scroll down and under **Syntax** click **Web_Map_as_JSON** and enter **JSON** as the **Dialog Explanation**
-  18. Click **Save** and exit the **Item Description** dialog box.
+  14. Click **Finish**.
+  15. Right-click **WebMap2GeoPDF** script in the toolbox and click **Item Description**.
+  16. Click *Edit*.
+  17. Enter '*geopdf*' as a tag, and fill Summary and Usage with '*WebMap2GeoPDF*'
+  18. Scroll down and under **Syntax** click **Web_Map_as_JSON** and enter '*JSON*' as the **Dialog Explanation**
+  19. Click **Save** and exit the **Item Description** dialog box.
 
 #### Execute WebMap2GeoPDF GeoProcessing tool
 1. In the **Catalog** window, right-click **WebMap2GeoPDF** script and click **Open**.
@@ -58,8 +58,8 @@ It is recommended that 'WebMap2GeoPDF' folder is placed in your 'c:\arcgisserver
 
 The geoprocessing service is now ready for the UI.
 
-### UI
-The 'ui' folder contains the files needed to display a basic map service in your browser with a 'Print' button which will call WebMap2GeoPDF.  To ensure the button works, we must update the link to the geoprocessing service we created...
+### JavaScript
+The 'javascript' folder contains the files needed to display a basic map service in your browser with a 'Print' button which will call WebMap2GeoPDF.  To ensure the button works, we must update the link to the geoprocessing service we created...
 
 > WebMap2GeoPDF.html (line 32)
 ```javascript
@@ -68,5 +68,5 @@ var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GeoPDF/GPServe
 
 If you deployed the service on a different server or if your environment is set up differently, change the URL above accordingly.  The default **should** work for default installation of ArcGIS Server.  
 
-## Running
-Open **ui/WebMap2GeoPDF.html** in your favorite web browser.  You should see a map and a 'Print' button.  
+## Running the UI
+Depending on your environment, you may be able to open **javascript/WebMap2GeoPDF.html** in your web browser.  If you don't see a map, you either don't have access to *arcgisonline.com* or you need to host **javascript/WebMap2GeoPDF.html** with a web server.  Most likely, your ArcGIS Server is running IIS and you can place the **javascript/WebMap2GeoPDF.html** into your '*c:\\inetpub\\wwwroot*' folder, or add a *Virtual Directory* with the IIS Manager which points to the **javascript** folder.  
