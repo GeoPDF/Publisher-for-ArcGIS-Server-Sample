@@ -11,15 +11,24 @@
       var printTask, params;
 
       function init() {
-		// when loading page, setup our web map and print task
+        // set start extent
+        var startExtent = new esri.geometry.Extent({
+          "xmin" : -9433029.553383145,
+          "ymin" : 3974861.6665989086,
+          "xmax" : -9356592.52509807,
+          "ymax" : 4020723.883569952,
+          "spatialReference" : {
+            "wkid" : 102100
+          }
+        });
 
         // create web map and add tiled map service
-        var map = new esri.Map("map");
+        var map = new esri.Map("map", { extent: startExtent });
         var tiledUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer";
         var tiledLayer = new esri.layers.ArcGISTiledMapServiceLayer(tiledUrl);
         map.addLayer(tiledLayer);
 		
-		// setup print task and PrintParameters
+		    // setup print task and PrintParameters
         var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GepPDF/GPServer/WebMap2GepPDF";
         printTask = new esri.tasks.PrintTask(printUrl, {async: true});
         params = new esri.tasks.PrintParameters();
@@ -27,8 +36,9 @@
       }
 
       function print() {
-		// when Print button is clicked, setup template and call print task
+		    // when Print button is clicked, setup template and call print task
         var printTemplate = new esri.tasks.PrintTemplate();
+
         // use the extent of the webmap in the output PDF
         printTemplate.preserveScale = false;
         params.template = printTemplate;
@@ -36,7 +46,7 @@
       }
 
       function printComplete(result) {
-		// when print task is done, show results
+		    // when print task is done, show results
         window.open(result.url);
       }
 
