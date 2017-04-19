@@ -6,7 +6,6 @@ This is a modification of the existing Esri [Tutorial: Basic web map printing an
 If you have any issues running or deploying this sample service, please reference the link above.  This sample uses a built-in template deployed with ArcGIS Server at the time of this writing.  If you'd like to change the template, update the 'templatePath' in the python component of this sample.
 
 > WebMap2GeoPDF.py (line 31)
-___
 ```javascript
 templatePath = r"C:\Program Files\ArcGIS\Server\Templates\ExportWebMapTemplates"
 ```
@@ -15,7 +14,7 @@ templatePath = r"C:\Program Files\ArcGIS\Server\Templates\ExportWebMapTemplates"
 It is recommended that 'WebMap2GeoPDF' folder is placed in your 'c:\arcgisserver', or equivalent, folder.  
 
 ### Python GeoProcessing Tool
-- Create python script tool
+#### Create python script tool
   1. Open the **Catalog** window in Arcmap and navigate to the **WebMap2GeoPDF** folder.
   2. Right-click the WebMap2GeoPDF folder and click **New > Toolbox**.
   3. Name the toolbox **WebMap2GeoPDF**.
@@ -63,7 +62,6 @@ The geoprocessing service is now ready for the UI.
 The 'ui' folder contains the files needed to display a basic map service in your browser with a 'Print' button which will call WebMap2GeoPDF.  To ensure the button works, we must update the link to the geoprocessing service we created...
 
 > WebMap2GeoPDF.html (line 32)
-___
 ```javascript
 var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GeoPDF/GPServer/WebMap2GeoPDF";
 ```
