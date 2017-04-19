@@ -39,20 +39,15 @@ mapDoc = result.mapDocument
 
 # Use the uuid module to generate a GUID as part of the output name
 # This will ensure a unique output name
-output = 'WebMap_{}.pdf'.format(str(uuid.uuid1()))
-Output_File = os.path.join(arcpy.env.scratchFolder, output)
+temp_filename = 'WebMap_{}.pdf'.format(str(uuid.uuid1()))
+Output_File = os.path.join(arcpy.env.scratchFolder, temp_filename)
 arcpy.AddMessage('Output PDF path: {0}'.format(Output_File))
 
-# Export the WebMap
-##arcpy.mapping.ExportToPDF(mapDoc, Output_File) 
+# Export the WebMap to GeoPDF
 pubpy_ex.ExportToGeoPDF(mapDoc, Output_File)
 
-# Set the output parameter to be the output file of the server job 
-paramBefore = arcpy.GetParameterAsText(1)
-arcpy.AddMessage('GetParameterAsText(1) before: {0}'.format(paramBefore))
-arcpy.SetParameterAsText(3, Output_File)
-paramAfter = arcpy.GetParameterAsText(2)
-arcpy.AddMessage('GetParameterAsText(2) after: {0}'.format(paramAfter))
+# set Output_File
+arcpy.SetParameterAsText(1, Output_File)
 
 # Clean up - delete the map document reference
 filePath = mapDoc.filePath

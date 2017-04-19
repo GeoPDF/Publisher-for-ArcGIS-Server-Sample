@@ -16,6 +16,7 @@ Creating a GeoPDF from an MXD is as simple as:
     from pubpy.geopdf_export.api import ExportMXDToGeoPDF
     ExportMXDToGeoPDF("my.mxd", "geo.pdf")
 
-from the Python window inside of ArcMap. This theme is expanded upon in the sample [MXD2GeoPDF.py](./MXD2GeoPDF.py) which is a command-line utility for creating GeoPDF documents from extant MXDs. You don't need to open ArcMap to make a GeoPDF map!
+from the Python window inside of ArcMap. This theme is expanded upon in the sample [MXD2GeoPDF.py](./MXD2GeoPDF/MXD2GeoPDF.py) which is a command-line utility for creating GeoPDF documents from extant MXDs. You don't need to open ArcMap to make a GeoPDF map!
 
 ## WebMap2GeoPDF: Create GeoPDF document from an ArcGIS web map
+See: [README](./WebMap2GeoPDF/README.md)
