@@ -29,7 +29,7 @@
         map.addLayer(tiledLayer);
 		
 		    // setup print task and PrintParameters
-        var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GepPDF/GPServer/WebMap2GepPDF";
+        var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GeoPDF/GPServer/WebMap2GeoPDF";
         printTask = new esri.tasks.PrintTask(printUrl, {async: true});
         params = new esri.tasks.PrintParameters();
         params.map = map;

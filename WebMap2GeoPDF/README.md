@@ -62,10 +62,10 @@ The geoprocessing service is now ready for the UI.
 ### UI
 The 'ui' folder contains the files needed to display a basic map service in your browser with a 'Print' button which will call WebMap2GeoPDF.  To ensure the button works, we must update the link to the geoprocessing service we created...
 
-> index.html (line 23)
+> index.html (line 32)
 ___
 ```javascript
-var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GepPDF/GPServer/WebMap2GepPDF";
+var printUrl = "http://localhost:6080/arcgis/rest/services/WebMap2GeoPDF/GPServer/WebMap2GeoPDF";
 ```
 
 If you deployed the service on a different server or if your environment is set up differently, change the URL above accordingly.  The default **should** work for default installation of ArcGIS Server.  
